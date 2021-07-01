@@ -11,7 +11,7 @@ public class JSONDataReaderTest {
     @Test
     public void readJsonFile_shouldAllPersonFireStationMedicalRecordObjectsFromJSON_forAFoundFileJson() {
 
-        JSONData jsonData = JSONDataReader.readJsonFile("src/main/resources/data.json");
+        JSONData jsonData = JSONDataReader.readJsonFile("src/test/resources/data.json");
 
         assertEquals(23, jsonData.getPersons().size());
         assertEquals(23, jsonData.getMedicalRecords().size());
