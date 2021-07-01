@@ -10,31 +10,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DatabaseTest {
 
     private JSONData jsonData;
+    private Database database;
 
     @BeforeEach
     public void setUpPerTest() {
 
-        this.jsonData = JSONDataReader.readJsonFile("src/test/resources/data.json");
+        this.jsonData = null;
+        this.database = null;
     }
 
     @Test
     public void initDatabase_shouldDatabaseWithSameNumberDataAsJSONData_forJSonDataSupplied() {
 
-        Database database = new Database(jsonData);
+        this.jsonData = JSONDataReader.readJsonFile("src/test/resources/data.json");
+        this.database = new Database(this.jsonData);
 
-        assertEquals(this.jsonData.getPersons().size(), database.getPersons().size());
-        assertEquals(this.jsonData.getFireStations().size(), database.fireStations.size());
+        assertEquals(this.jsonData.getPersons().size(), this.database.getPersons().size());
+        assertEquals(this.jsonData.getFireStations().size(), this.database.fireStations.size());
     }
 
     @Test
-    public void initDatabase_shouldDatabaseWithSameNumberDataAsJSONData_ForJSONDataBlank() {
+    public void initDatabase_shouldHaveADatabaseSizeOfZero_ForJSONDataBlank() {
 
-        JSONData jsonData = new JSONData();
-        Database database = new Database(jsonData);
+        this.jsonData = JSONDataReader.readJsonFile("");
+        this.database = new Database(this.jsonData);
 
-
-        assertEquals(jsonData.getPersons().size(), database.getPersons().size());
-        assertEquals(jsonData.getFireStations().size(), database.fireStations.size());
+        assertEquals(0, this.database.getPersons().size());
+        assertEquals(0, this.database.fireStations.size());
     }
 
 }
