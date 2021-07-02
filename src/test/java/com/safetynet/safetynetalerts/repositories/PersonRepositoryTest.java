@@ -110,7 +110,7 @@ public class PersonRepositoryTest {
                 "    }\n" +
                 "}", Person.class);
 
-        person.setBirthDate(LocalDate.of(1984, 03, 06));
+        person.setBirthDate(LocalDate.of(1984, 3, 6));
 
 
         personRepository.delete(person);
