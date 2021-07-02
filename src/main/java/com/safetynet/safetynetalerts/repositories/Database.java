@@ -17,9 +17,9 @@ public class Database {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 
-    List<Person> persons = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
 
-    List<FireStation> fireStations = new ArrayList<>();
+    private List<FireStation> fireStations = new ArrayList<>();
 
     public Database(JSONData jsonData) {
 
