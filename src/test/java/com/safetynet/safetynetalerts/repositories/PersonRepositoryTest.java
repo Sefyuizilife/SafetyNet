@@ -1,7 +1,5 @@
 package com.safetynet.safetynetalerts.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.entities.MedicalRecord;
 import com.safetynet.safetynetalerts.entities.Person;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,31 +86,25 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void delete_shouldReturnDatabaseSmallerThanBefore_ForDeletePerson() throws JsonProcessingException {
+    public void delete_shouldReturnDatabaseSmallerThanBefore_ForDeletePerson() {
 
         int beforeSize = personsDatabase.size();
 
-        Person person = new ObjectMapper().readValue(
-                "{\n" +
-                "    \"firstName\": \"John\",\n" +
-                "    \"lastName\": \"Boyd\",\n" +
-                "    \"address\": \"1509 Culver St\",\n" +
-                "    \"city\": \"Culver\",\n" +
-                "    \"zip\": 97451,\n" +
-                "    \"phone\": \"841-874-6512\",\n" +
-                "    \"email\": \"jaboyd@email.com\",\n" +
-                "    \"medicalRecord\": {\n" +
-                "        \"medications\": [\n" +
-                "            \"aznol:350mg\",\n" +
-                "            \"hydrapermazol:100mg\"\n" +
-                "        ],\n" +
-                "        \"allergies\": [\n" +
-                "            \"nillacilan\"\n" +
-                "        ]\n" +
-                "    }\n" +
-                "}", Person.class);
-
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Boyd");
+        person.setAddress("1509 Culver St");
+        person.setCity("Culver");
+        person.setZip(97451);
+        person.setPhone("841-874-6512");
+        person.setEmail("jaboyd@email.com");
         person.setBirthDate(LocalDate.of(1984, 3, 6));
+        person.setMedicalRecord(
+                new MedicalRecord(
+                        new ArrayList<>(Arrays.asList("aznol:350mg", "hydrapermazol:100mg")),
+                        new ArrayList<>(Collections.singletonList("nillacilan"))
+                )
+        );
 
 
         personRepository.delete(person);

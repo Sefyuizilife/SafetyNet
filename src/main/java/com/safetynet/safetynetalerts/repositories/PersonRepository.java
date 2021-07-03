@@ -10,9 +10,9 @@ import java.util.Optional;
 @Service
 public class PersonRepository implements IRepository<Person> {
 
-    private final List<Person> persons;
+    private List<Person> persons;
 
-    PersonRepository(Database database) {
+    public PersonRepository(Database database) {
 
         this.persons = database.getPersons();
     }
