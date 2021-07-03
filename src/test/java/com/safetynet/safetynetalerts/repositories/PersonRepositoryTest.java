@@ -69,19 +69,23 @@ public class PersonRepositoryTest {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("Boyd");
-        person.setBirthDate(LocalDate.now());
-        person.setAddress("5 rue des coquelicot");
-        person.setZip(51100);
-        person.setEmail("toto@gmail.com");
-        person.setPhone("0033-001");
-        person.setMedicalRecord(new MedicalRecord() {{
-            this.setAllergies(new ArrayList<>());
-            this.setMedications(new ArrayList<>());
-        }});
+        person.setAddress("1509 Culver St");
+        person.setCity("Culver");
+        person.setZip(97451);
+        person.setPhone("UPDATED");
+        person.setEmail("jaboyd@email.com");
+        person.setBirthDate(LocalDate.of(1984, 3, 6));
+        person.setMedicalRecord(
+                new MedicalRecord(
+                        new ArrayList<>(Arrays.asList("aznol:350mg", "hydrapermazol:100mg")),
+                        new ArrayList<>(Collections.singletonList("nillacilan"))
+                )
+        );
 
-        Person personSaved = personRepository.save(person);
+        Person personUpdated = personRepository.save(person);
 
-        assertThat(personsDatabase.contains(personSaved)).isTrue();
+        assertThat(personsDatabase.contains(personUpdated)).isTrue();
+        assertThat(personUpdated.getPhone()).isEqualTo("UPDATED");
         assertThat(personsDatabase.size()).isEqualTo(beforeSize);
     }
 
