@@ -10,50 +10,50 @@ import java.util.Optional;
 @Service
 public class PersonRepository implements IRepository<Person> {
 
-    private List<Person> persons;
+    private final Database database;
 
     public PersonRepository(Database database) {
 
-        this.persons = database.getPersons();
+        this.database = database;
     }
 
     @Override
     public List<Person> findAll() {
 
-        return persons;
+        return database.getPersons();
     }
 
     @Override
     public Person save(Person entity) {
 
-        Optional<Person> person = this.persons.stream()
-                                              .filter(item -> item.getLastName().equals(entity.getLastName()))
-                                              .filter(item -> item.getFirstName().equals(entity.getFirstName()))
-                                              .findFirst();
+        Optional<Person> person = this.database.getPersons().stream()
+                                               .filter(item -> item.getLastName().equals(entity.getLastName()))
+                                               .filter(item -> item.getFirstName().equals(entity.getFirstName()))
+                                               .findFirst();
 
         if (person.isPresent()) {
 
-            Collections.replaceAll(persons, person.get(), entity);
-            return persons.get(persons.indexOf(entity));
+            Collections.replaceAll(database.getPersons(), person.get(), entity);
+            return database.getPersons().get(database.getPersons().indexOf(entity));
         } else {
 
-            persons.add(entity);
-            return persons.get(persons.size() - 1);
+            database.getPersons().add(entity);
+            return database.getPersons().get(database.getPersons().size() - 1);
         }
     }
 
     @Override
     public void delete(Person entity) {
 
-        this.persons.remove(entity);
+        this.database.getPersons().remove(entity);
     }
 
     public Optional<Person> findByFullName(String firstName, String lastName) {
 
-        return this.persons.stream()
-                           .filter(item ->
-                                   item.getFirstName().equalsIgnoreCase(firstName))
-                           .filter(item -> item.getLastName().equalsIgnoreCase(lastName))
-                           .findFirst();
+        return this.database.getPersons().stream()
+                            .filter(item ->
+                                    item.getFirstName().equalsIgnoreCase(firstName))
+                            .filter(item -> item.getLastName().equalsIgnoreCase(lastName))
+                            .findFirst();
     }
 }
