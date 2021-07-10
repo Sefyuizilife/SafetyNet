@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.repositories;
 
 import com.safetynet.safetynetalerts.entities.MedicalRecord;
 import com.safetynet.safetynetalerts.entities.Person;
+import com.safetynet.safetynetalerts.services.json.JSONDataReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PersonRepositoryTest {
 
     private PersonRepository personRepository;
-    private List<Person>     personsDatabase;
+    private Database         database;
 
     @BeforeEach
     public void setUpPerTest(@Autowired Database database, @Autowired PersonRepository personRepository) {
 
-        this.personsDatabase  = database.getPersons();
+        this.database = database;
+        database.initDatabase(JSONDataReader.readJsonFile("src/test/resources/data.json"));
         this.personRepository = personRepository;
     }
 
@@ -33,14 +35,14 @@ public class PersonRepositoryTest {
 
         List<Person> persons = personRepository.findAll();
 
-        assertThat(persons.size()).isEqualTo(personsDatabase.size());
+        assertThat(persons.size()).isEqualTo(database.getPersons().size());
     }
 
 
     @Test
     public void save_shouldReturnCreatePerson_forNewPerson() {
 
-        int beforeSize = personsDatabase.size();
+        int beforeSize = database.getPersons().size();
 
         Person person = new Person();
         person.setFirstName("Youssef");
@@ -57,14 +59,14 @@ public class PersonRepositoryTest {
 
         Person personSaved = personRepository.save(person);
 
-        assertThat(personsDatabase.contains(personSaved)).isTrue();
-        assertThat(personsDatabase.size()).isGreaterThan(beforeSize);
+        assertThat(database.getPersons().contains(personSaved)).isTrue();
+        assertThat(database.getPersons().size()).isGreaterThan(beforeSize);
     }
 
     @Test
     public void update_shouldReturnUpdatedPerson_forPersonAlreadyExists() {
 
-        int beforeSize = personsDatabase.size();
+        int beforeSize = database.getPersons().size();
 
         Person person = new Person();
         person.setFirstName("John");
@@ -84,15 +86,15 @@ public class PersonRepositoryTest {
 
         Person personUpdated = personRepository.save(person);
 
-        assertThat(personsDatabase.contains(personUpdated)).isTrue();
+        assertThat(database.getPersons().contains(personUpdated)).isTrue();
         assertThat(personUpdated.getPhone()).isEqualTo("UPDATED");
-        assertThat(personsDatabase.size()).isEqualTo(beforeSize);
+        assertThat(database.getPersons().size()).isEqualTo(beforeSize);
     }
 
     @Test
     public void delete_shouldReturnDatabaseSmallerThanBefore_ForDeletePerson() {
 
-        int beforeSize = personsDatabase.size();
+        int beforeSize = database.getPersons().size();
 
         Person person = new Person();
         person.setFirstName("John");
@@ -113,7 +115,7 @@ public class PersonRepositoryTest {
 
         personRepository.delete(person);
 
-        assertThat(personsDatabase.contains(person)).isFalse();
-        assertThat(personsDatabase.size()).isLessThan(beforeSize);
+        assertThat(database.getPersons().contains(person)).isFalse();
+        assertThat(database.getPersons().size()).isLessThan(beforeSize);
     }
 }
