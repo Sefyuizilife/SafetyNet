@@ -26,7 +26,7 @@ public class DatabaseTest {
         this.database = new Database(this.jsonData);
 
         assertEquals(this.jsonData.getPersons().size(), this.database.getPersons().size());
-        assertEquals(this.jsonData.getFireStations().size(), this.database.fireStations.size());
+        assertEquals(this.jsonData.getFireStations().size(), this.database.getFireStations().size());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class DatabaseTest {
         this.database = new Database(this.jsonData);
 
         assertEquals(0, this.database.getPersons().size());
-        assertEquals(0, this.database.fireStations.size());
+        assertEquals(0, this.database.getFireStations().size());
     }
 
 }

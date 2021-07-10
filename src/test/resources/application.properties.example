@@ -1,2 +1,0 @@
-#JSON file path to initialize the database
-json.path = src/test/resources/data.json
