@@ -131,8 +131,9 @@ public class Person {
         Person person = (Person) o;
 
         return this.firstName.equalsIgnoreCase(person.firstName)
-               && (this.lastName.equalsIgnoreCase(person.lastName)
-                   && email.equalsIgnoreCase(person.email));
+               && this.lastName.equalsIgnoreCase(person.lastName)
+               && this.email.equalsIgnoreCase(person.email)
+               && this.birthDate.equals(person.birthDate);
     }
 
     @Override
