@@ -17,16 +17,18 @@ public class Database {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 
-    List<Person> persons = new ArrayList<>();
-
-    List<FireStation> fireStations = new ArrayList<>();
+    private List<Person>      persons;
+    private List<FireStation> fireStations;
 
     public Database(JSONData jsonData) {
 
         initDatabase(jsonData);
     }
 
-    private void initDatabase(JSONData jsonData) {
+    public void initDatabase(JSONData jsonData) {
+
+        persons      = new ArrayList<>();
+        fireStations = new ArrayList<>();
 
         LOGGER.info("Database - Initialization in progress...");
 

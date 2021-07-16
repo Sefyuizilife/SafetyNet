@@ -103,4 +103,42 @@ public class Person {
 
         this.medicalRecord = medicalRecord;
     }
+
+    @Override
+    public int hashCode() {
+
+        return this.firstName.hashCode() * this.getLastName().hashCode() * this.email.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+
+            return true;
+        }
+
+        if (o == null) {
+
+            return false;
+        }
+
+        if (this.getClass() != o.getClass()) {
+
+            return false;
+        }
+
+        Person person = (Person) o;
+
+        return this.firstName.equalsIgnoreCase(person.firstName)
+               && this.lastName.equalsIgnoreCase(person.lastName)
+               && this.email.equalsIgnoreCase(person.email)
+               && this.birthDate.equals(person.birthDate);
+    }
+
+    @Override
+    public String toString() {
+
+        return getLastName() + " " + getFirstName() + " " + getEmail();
+    }
 }
