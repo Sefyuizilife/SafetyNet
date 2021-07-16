@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -65,9 +64,16 @@ public class PersonService {
         return this.personRepository.findByFullName(firstName, lastName);
     }
 
-    public Person save(Person JPerson) {
+    public Person save(Person person) {
 
-        return this.personRepository.save(JPerson);
+        Optional<Person> oPerson = this.personRepository.findByFullName(person.getFirstName(), person.getLastName());
+
+        if (oPerson.isEmpty()) {
+
+            return this.personRepository.save(person);
+        }
+
+        throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     public void delete(String firstName, String lastName) {
@@ -77,12 +83,9 @@ public class PersonService {
         if (person.isPresent()) {
 
             personRepository.delete(person.get());
-
         } else {
 
-            throw new NoSuchElementException();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
-
-
 }

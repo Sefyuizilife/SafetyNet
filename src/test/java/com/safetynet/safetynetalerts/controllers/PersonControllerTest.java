@@ -119,7 +119,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void update_shouldReturnEditPersonCreated() throws Exception {
+    public void update_shouldReturnTheUpdatedPerson_whenAPersonExists() throws Exception {
 
         Person person = new Person();
         person.setLastName("SafeNet");
@@ -152,9 +152,22 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void delete_shouldReturnVoid() throws Exception {
+    public void delete_shouldReturnVoid_whenAPersonExist() throws Exception {
 
-        mockMvc.perform(delete("/person?firstName=Youssef&lastName=SafeNet"))
+        Person person = new Person();
+        person.setLastName("SafeNet");
+        person.setFirstName("Youssef");
+
+        JSONObject personJson = new JSONObject() {{
+            this.put("firstName", person.getFirstName());
+            this.put("lastName", person.getLastName());
+        }};
+
+        when(this.personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.of(person));
+
+        mockMvc.perform(delete("/person")
+                .content(String.valueOf(personJson))
+                .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isNoContent());
 
     }
