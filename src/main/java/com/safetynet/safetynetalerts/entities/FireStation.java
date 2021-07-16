@@ -2,11 +2,21 @@ package com.safetynet.safetynetalerts.entities;
 
 public class FireStation {
 
-    private String address;
     private Long   station;
+    private String address;
 
     public FireStation() {
 
+    }
+
+    public Long getStation() {
+
+        return station;
+    }
+
+    public void setStation(Long station) {
+
+        this.station = station;
     }
 
     public String getAddress() {
@@ -19,13 +29,26 @@ public class FireStation {
         this.address = address;
     }
 
-    public Long getStation() {
+    @Override
+    public boolean equals(Object obj) {
 
-        return station;
-    }
+        if (this == obj) {
 
-    public void setStation(Long station) {
+            return true;
+        }
 
-        this.station = station;
+        if (obj == null) {
+
+            return false;
+        }
+
+        if (this.getClass() != obj.getClass()) {
+
+            return false;
+        }
+
+        FireStation fireStation = (FireStation) obj;
+
+        return this.address.equals(fireStation.getAddress());
     }
 }
