@@ -13,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -116,6 +115,6 @@ public class PersonServiceTest {
 
         when(personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> personService.delete("", ""));
+        assertThrows(ResponseStatusException.class, () -> personService.delete("", ""));
     }
 }
