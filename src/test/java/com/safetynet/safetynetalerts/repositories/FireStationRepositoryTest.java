@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +34,15 @@ public class FireStationRepositoryTest {
         assertThat(fireStations.size()).isEqualTo(database.getFireStations().size());
     }
 
+    @Test
+    public void findByAddress() {
+
+        String address = "644 Gershwin Cir";
+
+        Optional<FireStation> oFireStation = fireStationRepository.findByAddress(address);
+
+        assertThat(oFireStation.get().getAddress()).isEqualTo(address);
+    }
 
     @Test
     public void save_shouldReturnCreateFireStation_forNewFireStation() {
