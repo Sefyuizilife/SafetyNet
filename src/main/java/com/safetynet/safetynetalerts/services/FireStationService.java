@@ -57,4 +57,9 @@ public class FireStationService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
+
+    public Optional<FireStation> findByAddress(String address) {
+
+        return this.fireStationRepository.findByAddress(address);
+    }
 }
