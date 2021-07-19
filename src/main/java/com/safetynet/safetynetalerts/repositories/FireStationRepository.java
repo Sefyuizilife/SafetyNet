@@ -46,4 +46,9 @@ public class FireStationRepository implements IRepository<FireStation> {
 
         this.database.getFireStations().remove(entity);
     }
+
+    public Optional<FireStation> findByAddress(String address) {
+
+        return this.database.getFireStations().stream().filter(item -> item.getAddress().equals(address)).findFirst();
+    }
 }
