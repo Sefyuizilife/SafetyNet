@@ -1,37 +1,55 @@
-package com.safetynet.safetynetalerts.services.json;
+package com.safetynet.safetynetalerts.DTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.safetynet.safetynetalerts.entities.Person;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class JMedicalRecord {
+public class MedicalRecordDTO {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.FRANCE);
 
-    @JsonIgnore
     private String firstName;
-
-    @JsonIgnore
     private String lastName;
 
     private LocalDate    birthdate;
     private List<String> medications;
     private List<String> allergies;
 
-    public JMedicalRecord() {
+    public MedicalRecordDTO() {
 
     }
 
-    @JsonIgnore
+    public MedicalRecordDTO(Person person) {
+
+        this.setFirstName(person.getFirstName());
+        this.setLastName(person.getLastName());
+        this.setBirthdate(person.getBirthDate());
+        if (person.getMedicalRecord() != null) {
+            this.setMedications(person.getMedicalRecord().getMedications());
+            this.setAllergies(person.getMedicalRecord().getAllergies());
+        }
+    }
+
+    public static List<MedicalRecordDTO> getMedicalRecordDTOs(List<Person> persons) {
+
+        ArrayList<MedicalRecordDTO> medicalRecordDTOS = new ArrayList<>();
+        for (Person person : persons) {
+            medicalRecordDTOS.add(new MedicalRecordDTO(person));
+        }
+
+
+        return medicalRecordDTOS;
+    }
+
     public String getFirstName() {
 
         return firstName;
     }
 
-    @JsonIgnore
     public void setFirstName(String firstName) {
 
         this.firstName = firstName;
@@ -55,6 +73,11 @@ public class JMedicalRecord {
     public void setBirthdate(String birthdate) {
 
         this.birthdate = LocalDate.parse(birthdate, this.formatter);
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+
+        this.birthdate = birthdate;
     }
 
     public List<String> getMedications() {

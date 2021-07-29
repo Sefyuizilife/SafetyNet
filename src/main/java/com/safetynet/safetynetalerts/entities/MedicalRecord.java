@@ -1,5 +1,7 @@
 package com.safetynet.safetynetalerts.entities;
 
+import com.safetynet.safetynetalerts.DTO.FireStationDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 

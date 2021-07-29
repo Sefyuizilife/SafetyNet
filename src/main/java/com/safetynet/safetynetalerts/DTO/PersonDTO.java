@@ -1,6 +1,6 @@
-package com.safetynet.safetynetalerts.services.json;
+package com.safetynet.safetynetalerts.DTO;
 
-public class JPerson {
+public class PersonDTO {
 
     private String  firstName;
     private String  lastName;
