@@ -38,14 +38,11 @@ public class PersonServiceTest {
     public void findAll_shouldReturnAllPersonOfDatabase() {
 
         when(personRepository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(
-                new Person(),
-                new Person(),
-                new Person(),
-                new Person(),
-                new Person(),
-                new Person(),
-                new Person(),
-                new Person()
+                new Person("person", "1", "address1", 1, "city1", "phone1", "email1"),
+                new Person("person", "2", "address2", 2, "city2", "phone2", "email2"),
+                new Person("person", "3", "address3", 3, "city3", "phone3", "email3"),
+                new Person("person", "4", "address4", 4, "city4", "phone4", "email4"),
+                new Person("person", "5", "address5", 5, "city5", "phone5", "email5")
         )));
 
         assertThat(personService.findAll()).isEqualTo(personRepository.findAll());
