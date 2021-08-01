@@ -1,18 +1,46 @@
 package com.safetynet.safetynetalerts.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.safetynet.safetynetalerts.DTO.MedicalRecordDTO;
+
 import java.time.LocalDate;
 
 public class Person {
 
-    private String        firstName;
-    private String        lastName;
-    private LocalDate     birthDate;
-    private String        address;
-    private String        city;
-    private Integer       zip;
-    private String        phone;
-    private String        email;
+    private String    firstName;
+    private String    lastName;
+    private LocalDate birthDate;
+    private String    address;
+    private String    city;
+    private Integer   zip;
+    private String    phone;
+    private String    email;
+
+    @JsonIgnore
     private MedicalRecord medicalRecord;
+
+    public Person() {
+
+    }
+
+    public Person(String firstName, String lastName, String address, Integer zip, String city, String phone, String email) {
+
+        this.firstName = firstName;
+        this.lastName  = lastName;
+        this.address   = address;
+        this.city      = city;
+        this.zip       = zip;
+        this.phone     = phone;
+        this.email     = email;
+    }
+
+    public Person(MedicalRecordDTO medicalRecordDTO) {
+
+        this.setFirstName(medicalRecordDTO.getFirstName());
+        this.setLastName(medicalRecordDTO.getLastName());
+        this.setBirthDate(medicalRecordDTO.getBirthdate());
+        this.setMedicalRecord(new MedicalRecord(medicalRecordDTO.getMedications(), medicalRecordDTO.getAllergies()));
+    }
 
     public String getFirstName() {
 
@@ -131,14 +159,12 @@ public class Person {
         Person person = (Person) o;
 
         return this.firstName.equalsIgnoreCase(person.firstName)
-               && this.lastName.equalsIgnoreCase(person.lastName)
-               && this.email.equalsIgnoreCase(person.email)
-               && this.birthDate.equals(person.birthDate);
+               && this.lastName.equalsIgnoreCase(person.lastName);
     }
 
     @Override
     public String toString() {
 
-        return getLastName() + " " + getFirstName() + " " + getEmail();
+        return getLastName() + " " + getFirstName();
     }
 }

@@ -1,11 +1,11 @@
-package com.safetynet.safetynetalerts.services.json;
+package com.safetynet.safetynetalerts.DTO;
 
-public class JFireStation {
+public class FireStationDTO {
 
     private String address;
     private Long   station;
 
-    public JFireStation() {
+    public FireStationDTO() {
 
     }
 

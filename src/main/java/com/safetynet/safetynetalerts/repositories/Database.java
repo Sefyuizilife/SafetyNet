@@ -3,9 +3,9 @@ package com.safetynet.safetynetalerts.repositories;
 import com.safetynet.safetynetalerts.entities.FireStation;
 import com.safetynet.safetynetalerts.entities.MedicalRecord;
 import com.safetynet.safetynetalerts.entities.Person;
-import com.safetynet.safetynetalerts.services.json.JFireStation;
-import com.safetynet.safetynetalerts.services.json.JMedicalRecord;
-import com.safetynet.safetynetalerts.services.json.JPerson;
+import com.safetynet.safetynetalerts.DTO.FireStationDTO;
+import com.safetynet.safetynetalerts.DTO.MedicalRecordDTO;
+import com.safetynet.safetynetalerts.DTO.PersonDTO;
 import com.safetynet.safetynetalerts.services.json.JSONData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,18 +32,18 @@ public class Database {
 
         LOGGER.info("Database - Initialization in progress...");
 
-        List<JPerson>        jPersons        = jsonData.getPersons();
-        List<JFireStation>   jFireStations   = jsonData.getFireStations();
-        List<JMedicalRecord> jMedicalsRecord = jsonData.getMedicalRecords();
+        List<PersonDTO>      personDTOS      = jsonData.getPersons();
+        List<FireStationDTO> fireStationDTOS = jsonData.getFireStations();
+        List<MedicalRecordDTO> jMedicalsRecord = jsonData.getMedicalRecords();
 
-        int size = jPersons.size();
+        int size = personDTOS.size();
 
         for (int i = 0 ; i < size ; i++) {
 
-            this.persons.add(this.toPerson(jPersons.get(i), jMedicalsRecord.get(i)));
+            this.persons.add(this.toPerson(personDTOS.get(i), jMedicalsRecord.get(i)));
         }
 
-        jFireStations.forEach(item -> fireStations.add(this.toFireStation(item)));
+        fireStationDTOS.forEach(item -> fireStations.add(this.toFireStation(item)));
 
         LOGGER.info("Database - Successfully initialized");
     }
@@ -68,30 +68,30 @@ public class Database {
         this.fireStations = FireStations;
     }
 
-    private Person toPerson(JPerson jPerson, JMedicalRecord jMedicalRecord) {
+    private Person toPerson(PersonDTO personDTO, MedicalRecordDTO medicalRecordDTO) {
 
         Person        person        = new Person();
-        MedicalRecord medicalRecord = new MedicalRecord(jMedicalRecord.getMedications(), jMedicalRecord.getAllergies());
+        MedicalRecord medicalRecord = new MedicalRecord(medicalRecordDTO.getMedications(), medicalRecordDTO.getAllergies());
 
-        person.setFirstName(jPerson.getFirstName());
-        person.setLastName(jPerson.getLastName());
-        person.setBirthDate(jMedicalRecord.getBirthdate());
-        person.setAddress(jPerson.getAddress());
-        person.setZip(jPerson.getZip());
-        person.setCity(jPerson.getCity());
-        person.setEmail(jPerson.getEmail());
-        person.setPhone(jPerson.getPhone());
+        person.setFirstName(personDTO.getFirstName());
+        person.setLastName(personDTO.getLastName());
+        person.setBirthDate(medicalRecordDTO.getBirthdate());
+        person.setAddress(personDTO.getAddress());
+        person.setZip(personDTO.getZip());
+        person.setCity(personDTO.getCity());
+        person.setEmail(personDTO.getEmail());
+        person.setPhone(personDTO.getPhone());
         person.setMedicalRecord(medicalRecord);
 
         return person;
     }
 
-    private FireStation toFireStation(JFireStation jFireStation) {
+    private FireStation toFireStation(FireStationDTO fireStationDTO) {
 
         FireStation fireStation = new FireStation();
 
-        fireStation.setStation(jFireStation.getStation());
-        fireStation.setAddress(jFireStation.getAddress());
+        fireStation.setStation(fireStationDTO.getStation());
+        fireStation.setAddress(fireStationDTO.getAddress());
 
         return fireStation;
     }
