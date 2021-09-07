@@ -49,6 +49,7 @@ public class FireStation {
 
         FireStation fireStation = (FireStation) obj;
 
-        return this.address.equals(fireStation.getAddress());
+        return this.address.equals(fireStation.getAddress()) &&
+               this.station.equals(fireStation.getStation());
     }
 }
