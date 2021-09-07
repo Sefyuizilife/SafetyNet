@@ -134,7 +134,6 @@ public class PersonControllerTest {
         JSONObject personJson = new JSONObject() {{
             this.put("lastName", person.getLastName());
             this.put("firstName", person.getFirstName());
-            this.put("birthDate", person.getBirthDate());
             this.put("email", person.getEmail());
             this.put("address", person.getAddress());
             this.put("zip", person.getZip());
