@@ -38,7 +38,6 @@ public class PersonRepositoryTest {
         assertThat(persons.size()).isEqualTo(database.getPersons().size());
     }
 
-
     @Test
     public void save_shouldReturnCreatePerson_forNewPerson() {
 
