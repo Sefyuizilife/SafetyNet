@@ -49,7 +49,6 @@ public class MedicalRecordController {
     public void delete(@RequestBody MedicalRecordDTO medicalRecordDTO) {
 
         this.medicalRecordService.delete(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName());
+        throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
-
-
 }
