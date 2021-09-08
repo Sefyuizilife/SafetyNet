@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FireStationRepository implements IRepository<FireStation> {
@@ -47,8 +48,37 @@ public class FireStationRepository implements IRepository<FireStation> {
         this.database.getFireStations().remove(entity);
     }
 
+    public boolean isExisting(FireStation fireStation) {
+
+        Optional<FireStation> oFireStation = this.database.getFireStations()
+                                                          .stream()
+                                                          .filter(item -> item.equals(fireStation))
+                                                          .findFirst();
+
+        return oFireStation.isPresent();
+    }
+
     public Optional<FireStation> findByAddress(String address) {
 
-        return this.database.getFireStations().stream().filter(item -> item.getAddress().equals(address)).findFirst();
+        return this.database.getFireStations()
+                            .stream()
+                            .filter(item -> item.getAddress().equals(address))
+                            .findFirst();
+    }
+
+    public List<FireStation> findAllByStation(Long stationNumber) {
+
+        return this.database.getFireStations()
+                            .stream()
+                            .filter(item -> item.getStation().equals(stationNumber))
+                            .collect(Collectors.toList());
+    }
+
+    public List<FireStation> findAllByStations(List<Long> stationNumber) {
+
+        return this.database.getFireStations()
+                            .stream()
+                            .filter(item -> stationNumber.contains(item.getStation()))
+                            .collect(Collectors.toList());
     }
 }
