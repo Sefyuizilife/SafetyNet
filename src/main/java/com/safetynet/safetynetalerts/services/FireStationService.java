@@ -35,9 +35,7 @@ public class FireStationService {
 
     public FireStation save(FireStation fireStation) {
 
-        Optional<FireStation> oFireStation = this.fireStationRepository.findByAddress(fireStation.getAddress());
-
-        if (oFireStation.isEmpty()) {
+        if (!this.fireStationRepository.isExisting(fireStation)) {
 
             return this.fireStationRepository.save(fireStation);
         }
@@ -61,5 +59,15 @@ public class FireStationService {
     public Optional<FireStation> findByAddress(String address) {
 
         return this.fireStationRepository.findByAddress(address);
+    }
+
+    public List<FireStation> findAllByStation(Long stationNumber) {
+
+        return this.fireStationRepository.findAllByStation(stationNumber);
+    }
+
+    public List<FireStation> findAllByStations(List<Long> stationNumber) {
+
+        return this.fireStationRepository.findAllByStations(stationNumber);
     }
 }
