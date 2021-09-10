@@ -1,8 +1,7 @@
 package com.safetynet.safetynetalerts.entities;
 
-import com.safetynet.safetynetalerts.DTO.FireStationDTO;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MedicalRecord {
@@ -38,5 +37,11 @@ public class MedicalRecord {
     public void setAllergies(List<String> allergies) {
 
         this.allergies = allergies;
+    }
+
+    @Override
+    public String toString() {
+
+        return Arrays.toString(this.getMedications().toArray()) + Arrays.toString(this.getAllergies().toArray());
     }
 }

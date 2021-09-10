@@ -6,8 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -87,5 +90,39 @@ public class PersonService {
 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public List<Person> findAllByAddress(String address) {
+
+        return this.personRepository.findAll()
+                                    .stream()
+                                    .filter(item -> address.equals(item.getAddress()))
+                                    .map(Person::new)
+                                    .collect(Collectors.toList());
+    }
+
+    public List<Person> findAllByAddresses(List<String> addresses) {
+
+        return this.personRepository.findAll()
+                                    .stream()
+                                    .filter(item -> addresses.contains(item.getAddress()))
+                                    .map(Person::new)
+                                    .collect(Collectors.toList());
+    }
+
+    public int getChildrenNumber(List<Person> persons) {
+
+        return (int) persons.stream()
+                            .filter(item -> Period.between(item.getBirthDate(), LocalDate.now()).getYears() <= 18)
+                            .count();
+    }
+
+    public List<Person> findAllByCity(String city) {
+
+        return this.personRepository.findAll()
+                                    .stream()
+                                    .filter(item -> item.getCity().equals(city))
+                                    .map(Person::new)
+                                    .collect(Collectors.toList());
     }
 }

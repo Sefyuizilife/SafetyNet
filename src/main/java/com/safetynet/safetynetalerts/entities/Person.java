@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.safetynet.safetynetalerts.DTO.MedicalRecordDTO;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 
@@ -32,6 +33,19 @@ public class Person {
         this.zip       = zip;
         this.phone     = phone;
         this.email     = email;
+    }
+
+    public Person(Person person) {
+
+        this.firstName     = person.getFirstName();
+        this.lastName      = person.getLastName();
+        this.birthDate     = person.getBirthDate();
+        this.address       = person.getAddress();
+        this.city          = person.getCity();
+        this.zip           = person.getZip();
+        this.phone         = person.getPhone();
+        this.email         = person.getEmail();
+        this.medicalRecord = person.getMedicalRecord();
     }
 
     public Person(MedicalRecordDTO medicalRecordDTO) {
@@ -166,5 +180,19 @@ public class Person {
     public String toString() {
 
         return getLastName() + " " + getFirstName();
+    }
+
+    public JSONObject toJson() {
+
+        return new JSONObject() {{
+            this.put("firstName", Person.this.firstName);
+            this.put("lastName", Person.this.lastName);
+            this.put("birthDate", Person.this.birthDate);
+            this.put("address", Person.this.address);
+            this.put("city", Person.this.city);
+            this.put("zip", Person.this.zip);
+            this.put("phone", Person.this.phone);
+            this.put("email", Person.this.email);
+        }};
     }
 }

@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class FireStationRepositoryTest {
@@ -35,7 +38,7 @@ public class FireStationRepositoryTest {
     }
 
     @Test
-    public void findByAddress() {
+    public void findByAddress_shouldFireStation_forACorrespondingAddress() {
 
         String address = "644 Gershwin Cir";
 
@@ -80,11 +83,63 @@ public class FireStationRepositoryTest {
         int beforeSize = database.getFireStations().size();
 
         FireStation fireStation = new FireStation();
+        fireStation.setStation(3L);
         fireStation.setAddress("1509 Culver St");
 
-        fireStationRepository.delete(fireStation);
+        this.fireStationRepository.delete(fireStation);
 
         assertThat(database.getFireStations().contains(fireStation)).isFalse();
         assertThat(database.getFireStations().size()).isLessThan(beforeSize);
+    }
+
+    @Test
+    public void isExisting_shouldReturnTrue_ForExistingFireStation() {
+
+        FireStation fireStation = new FireStation();
+        fireStation.setStation(3L);
+        fireStation.setAddress("1509 Culver St");
+
+        boolean isExisting = this.fireStationRepository.isExisting(fireStation);
+
+        assertTrue(isExisting);
+        assertThat(database.getFireStations().contains(fireStation)).isTrue();
+    }
+
+    @Test
+    public void isExisting_shouldReturnFalse_ForNotExistingFireStation() {
+
+        FireStation fireStation = new FireStation();
+        fireStation.setStation(987654321L);
+        fireStation.setAddress("1509 Culver St");
+
+        boolean isExisting = this.fireStationRepository.isExisting(fireStation);
+
+        assertFalse(isExisting);
+        assertThat(database.getFireStations().contains(fireStation)).isFalse();
+    }
+
+    @Test
+    public void findAllByStation_shouldReturnAllStation_ForAnExistingStationNumber() {
+
+        Long stationNumber = 1L;
+
+        List<FireStation> fireStations = this.fireStationRepository.findAllByStation(stationNumber);
+
+        long fireStationCount = this.database.getFireStations()
+                                             .stream()
+                                             .filter(item -> item.getStation().equals(stationNumber))
+                                             .count();
+
+        assertThat(fireStations.size()).isEqualTo(fireStationCount);
+    }
+
+    @Test
+    public void findAllByStations_shouldReturnAllStation_ForAnExistingStationNumber() {
+
+        List<Long> stationNumbers = Arrays.asList(1L, 2L, 3L, 4L);
+
+        List<FireStation> fireStations = this.fireStationRepository.findAllByStations(stationNumbers);
+
+        assertThat(fireStations.size()).isEqualTo(this.database.getFireStations().size());
     }
 }

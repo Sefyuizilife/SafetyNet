@@ -124,17 +124,17 @@ public class MedicalRecordServiceTest {
     @Test
     public void delete_shouldRemoveTheMedicalRecordFromTheDatabase_ForMedicalRecordExisting() {
 
-        MedicalRecordDTO mr = new MedicalRecordDTO();
-        mr.setFirstName("Youssef");
-        mr.setLastName("SafeNet");
-        mr.setBirthdate(LocalDate.now());
-        mr.setMedications(Arrays.asList("1", "2"));
-        mr.setAllergies(Arrays.asList("1", "2"));
+        MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
+        medicalRecordDTO.setFirstName("Youssef");
+        medicalRecordDTO.setLastName("SafeNet");
+        medicalRecordDTO.setBirthdate(LocalDate.now());
+        medicalRecordDTO.setMedications(Arrays.asList("1", "2"));
+        medicalRecordDTO.setAllergies(Arrays.asList("1", "2"));
 
 
-        when(personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.of(new Person(mr)));
+        when(personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.of(new Person(medicalRecordDTO)));
 
-        medicalRecordService.delete(mr.getFirstName(), mr.getLastName());
+        medicalRecordService.delete(medicalRecordDTO.getFirstName(), medicalRecordDTO.getLastName());
 
         verify(personRepository, times(1)).findByFullName(anyString(), anyString());
     }
@@ -145,5 +145,31 @@ public class MedicalRecordServiceTest {
         when(personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> medicalRecordService.delete("", ""));
+    }
+
+    @Test
+    public void create_shouldReturnMedicalRecord_ForNewMedicalRecord() {
+
+        MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO() {{
+
+            this.setFirstName("firstName");
+            this.setLastName("lastName");
+            this.setBirthdate(LocalDate.of(2000, 1, 1));
+            this.setMedications(Arrays.asList("medications1, medication2", "medication3"));
+            this.setAllergies(Arrays.asList("allergie1", "allergie2"));
+        }};
+
+        Person person = new Person("firstName", "lastName", "address", 12345, "city", "phone", "email");
+
+        when(this.personRepository.findByFullName(anyString(), anyString())).thenReturn(Optional.of(person));
+        when(this.personRepository.save(any(Person.class))).thenReturn(person);
+
+        MedicalRecordDTO medicalRecordDTOCreated = this.medicalRecordService.create(medicalRecordDTO);
+
+        assertThat(medicalRecordDTOCreated.getLastName()).isEqualTo(medicalRecordDTO.getLastName());
+        assertThat(medicalRecordDTOCreated.getFirstName()).isEqualTo(medicalRecordDTO.getFirstName());
+        assertThat(medicalRecordDTOCreated.getBirthdate()).isEqualTo(medicalRecordDTO.getBirthdate());
+        assertThat(medicalRecordDTOCreated.getMedications()).isEqualTo(medicalRecordDTO.getMedications());
+        assertThat(medicalRecordDTOCreated.getAllergies()).isEqualTo(medicalRecordDTO.getAllergies());
     }
 }

@@ -26,6 +26,7 @@ public class MedicalRecordService {
 
         return this.personRepository.findAll()
                                     .stream()
+                                    .filter(item -> item.getBirthDate() != null)
                                     .map(MedicalRecordDTO::new)
                                     .collect(Collectors.toList());
     }
@@ -59,7 +60,7 @@ public class MedicalRecordService {
         if (person.getBirthDate() == null && person.getMedicalRecord() == null) {
 
             person.setBirthDate(medicalRecordDTO.getBirthdate());
-            person.setMedicalRecord(new MedicalRecord(medicalRecordDTO.getAllergies(), medicalRecordDTO.getMedications()));
+            person.setMedicalRecord(new MedicalRecord(medicalRecordDTO.getMedications(), medicalRecordDTO.getAllergies()));
 
             return new MedicalRecordDTO(this.personRepository.save(person));
         }
@@ -101,6 +102,7 @@ public class MedicalRecordService {
 
                 person.setBirthDate(null);
                 person.setMedicalRecord(null);
+
             } else {
 
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);

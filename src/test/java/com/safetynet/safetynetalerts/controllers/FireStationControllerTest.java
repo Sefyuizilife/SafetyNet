@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,28 +28,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class FireStationControllerTest {
 
+    List<FireStation> fireStations = new ArrayList<>();
     @MockBean
-    private FireStationService fireStationService;
-
+    private FireStationService    fireStationService;
     @MockBean
     private FireStationRepository fireStationRepository;
-
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc               mockMvc;
+
+    {
+        fireStations.add(new FireStation() {{
+            this.setStation(1L);
+            this.setAddress("5, rue des coquelicots");
+        }});
+        fireStations.add(new FireStation() {{
+            this.setStation(2L);
+            this.setAddress("13, rue des coquelicots");
+        }});
+    }
 
     @Test
     public void browse_shouldAllFireStations() throws Exception {
 
-        FireStation fireStation = new FireStation();
-        fireStation.setStation(1L);
-        fireStation.setAddress("5, rue des coquelicots");
-
-        List<FireStation> fireStations = new ArrayList<>();
-        fireStations.add(fireStation);
-
         when(fireStationService.findAll()).thenReturn(fireStations);
 
         mockMvc.perform(get("/firestation"))
+               .andDo(print())
                .andExpect(status().isOk())
                .andExpect(content().string(containsString("coquelicots")))
                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -87,8 +92,8 @@ public class FireStationControllerTest {
         when(this.fireStationService.save(any(FireStation.class))).thenReturn(fireStation);
 
         mockMvc.perform(post("/firestation")
-                .content(String.valueOf(fireStationJson))
-                .contentType(MediaType.APPLICATION_JSON))
+                       .content(String.valueOf(fireStationJson))
+                       .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().json(String.valueOf(fireStationJson)));
     }
@@ -109,8 +114,8 @@ public class FireStationControllerTest {
         when(this.fireStationService.update(any())).thenReturn(fireStation);
 
         mockMvc.perform(put("/firestation")
-                .content(String.valueOf(fireStationJson))
-                .contentType(MediaType.APPLICATION_JSON))
+                       .content(String.valueOf(fireStationJson))
+                       .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().json(String.valueOf(fireStationJson)));
     }
@@ -130,8 +135,8 @@ public class FireStationControllerTest {
         when(this.fireStationRepository.findByAddress(anyString())).thenReturn(Optional.of(fireStation));
 
         mockMvc.perform(delete("/firestation")
-                .content(String.valueOf(fireStationJson))
-                .contentType(MediaType.APPLICATION_JSON))
+                       .content(String.valueOf(fireStationJson))
+                       .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isNoContent());
 
     }
