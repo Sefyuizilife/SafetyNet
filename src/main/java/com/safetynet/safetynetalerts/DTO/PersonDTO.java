@@ -1,5 +1,7 @@
 package com.safetynet.safetynetalerts.DTO;
 
+import org.json.JSONObject;
+
 public class PersonDTO {
 
     private String  firstName;
@@ -80,4 +82,16 @@ public class PersonDTO {
         this.email = email;
     }
 
+    public JSONObject toJson() {
+
+        return new JSONObject() {{
+            this.put("firstName", PersonDTO.this.firstName);
+            this.put("lastName", PersonDTO.this.lastName);
+            this.put("address", PersonDTO.this.address);
+            this.put("city", PersonDTO.this.city);
+            this.put("zip", PersonDTO.this.zip);
+            this.put("phone", PersonDTO.this.phone);
+            this.put("email", PersonDTO.this.email);
+        }};
+    }
 }

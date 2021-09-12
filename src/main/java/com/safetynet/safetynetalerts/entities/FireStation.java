@@ -1,5 +1,8 @@
 package com.safetynet.safetynetalerts.entities;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class FireStation {
 
     private Long   station;
@@ -51,5 +54,13 @@ public class FireStation {
 
         return this.address.equals(fireStation.getAddress()) &&
                this.station.equals(fireStation.getStation());
+    }
+
+    public JSONObject toJson() {
+
+        return new JSONObject() {{
+            this.put("station", new JSONArray(FireStation.this.station));
+            this.put("address", new JSONArray(FireStation.this.address));
+        }};
     }
 }

@@ -52,7 +52,7 @@ public class FireStationController {
                                                                        }})
                                                                        .collect(Collectors.toList()));
 
-            LOGGER.info(jsonArray.toString());
+            LOGGER.debug(jsonArray.toString());
             return jsonArray.toString();
         } else {
 
@@ -92,7 +92,7 @@ public class FireStationController {
                 this.put("kidsNumber", childrenNumber);
             }};
 
-            LOGGER.info(jsonObject.toString());
+            LOGGER.debug(jsonObject.toString());
             return jsonObject.toString();
         }
     }
@@ -105,7 +105,7 @@ public class FireStationController {
         FireStation fireStation = this.fireStationService.findByAddress(address)
                                                          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        LOGGER.info(OM.writeValueAsString(fireStation));
+        LOGGER.debug(OM.writeValueAsString(fireStation));
         return fireStation;
     }
 
@@ -116,7 +116,7 @@ public class FireStationController {
 
         fireStation = this.fireStationService.update(fireStation);
 
-        LOGGER.info(OM.writeValueAsString(fireStation));
+        LOGGER.debug(OM.writeValueAsString(fireStation));
         return fireStation;
     }
 
@@ -127,7 +127,7 @@ public class FireStationController {
 
         fireStation = this.fireStationService.save(fireStation);
 
-        LOGGER.info(OM.writeValueAsString(fireStation));
+        LOGGER.debug(OM.writeValueAsString(fireStation));
         return fireStation;
     }
 
@@ -138,7 +138,6 @@ public class FireStationController {
 
         fireStationService.delete(fireStation.getAddress());
 
-        LOGGER.info(new ResponseStatusException(HttpStatus.NO_CONTENT).toString());
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
 }

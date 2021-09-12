@@ -73,7 +73,7 @@ public class EndPointSpecificController {
             );
         }};
 
-        LOGGER.info(jsonArray.toString());
+        LOGGER.debug(jsonArray.toString());
         return jsonArray.toString();
     }
 
@@ -90,7 +90,7 @@ public class EndPointSpecificController {
 
         JSONArray jsonArray = new JSONArray(persons.stream().map(Person::getPhone).collect(Collectors.toList()));
 
-        LOGGER.info(jsonArray.toString());
+        LOGGER.debug(jsonArray.toString());
         return jsonArray.toString();
     }
 
@@ -103,7 +103,7 @@ public class EndPointSpecificController {
 
         JSONArray jsonArray = new JSONArray(persons.stream().map(Person::getEmail).collect(Collectors.toList()));
 
-        LOGGER.info(jsonArray.toString());
+        LOGGER.debug(jsonArray.toString());
         return jsonArray.toString();
     }
 
@@ -120,8 +120,7 @@ public class EndPointSpecificController {
 
         if (fireStation.isEmpty() || persons.isEmpty()) {
 
-            LOGGER.info(jsonObject.toString());
-            return jsonObject.toString();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
         JSONArray jsonPersons = new JSONArray();
@@ -142,7 +141,7 @@ public class EndPointSpecificController {
         jsonObject.put("station", fireStation.get().getStation());
         jsonObject.put("persons", jsonPersons);
 
-        LOGGER.info(jsonObject.toString());
+        LOGGER.debug(jsonObject.toString());
         return jsonObject.toString();
     }
 
@@ -188,7 +187,7 @@ public class EndPointSpecificController {
             results.put(result);
         }
 
-        LOGGER.info(results.toString());
+        LOGGER.debug(results.toString());
         return results.toString();
     }
 
@@ -211,7 +210,7 @@ public class EndPointSpecificController {
             this.put("allergies", new JSONArray(person.getMedicalRecord().getAllergies()));
         }};
 
-        LOGGER.info(jsonObject.toString());
+        LOGGER.debug(jsonObject.toString());
         return jsonObject.toString();
     }
 }

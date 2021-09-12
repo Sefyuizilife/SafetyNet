@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping("/person")
@@ -34,7 +35,7 @@ public class PersonController {
 
         List<Person> persons = this.personService.findAll();
 
-        LOGGER.info(persons.toString());
+        LOGGER.debug(Arrays.toString(persons.stream().map(Person::toJson).toArray()));
         return persons;
     }
 
@@ -46,7 +47,7 @@ public class PersonController {
         Person person = this.personService.findByFullName(firstName, lastName)
                                           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        LOGGER.info(person.toJson().toString());
+        LOGGER.debug(person.toJson().toString());
         return person;
     }
 
@@ -57,7 +58,7 @@ public class PersonController {
 
         person = this.personService.update(person);
 
-        LOGGER.info(person.toJson().toString());
+        LOGGER.debug(person.toJson().toString());
         return person;
     }
 
@@ -68,7 +69,7 @@ public class PersonController {
 
         person = this.personService.save(person);
 
-        LOGGER.info(person.toJson().toString());
+        LOGGER.debug(person.toJson().toString());
         return person;
     }
 
