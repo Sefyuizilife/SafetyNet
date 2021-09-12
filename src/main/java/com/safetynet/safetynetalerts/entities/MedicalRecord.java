@@ -1,5 +1,8 @@
 package com.safetynet.safetynetalerts.entities;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,5 +46,13 @@ public class MedicalRecord {
     public String toString() {
 
         return Arrays.toString(this.getMedications().toArray()) + Arrays.toString(this.getAllergies().toArray());
+    }
+
+    public JSONObject toJson() {
+
+        return new JSONObject() {{
+            this.put("medications", new JSONArray(MedicalRecord.this.medications));
+            this.put("allergies", new JSONArray(MedicalRecord.this.allergies));
+        }};
     }
 }

@@ -1,2 +1,9 @@
 #JSON file path to initialize the database
 json.path = src/main/resources/data.json
+
+# Logger configuration
+logging.level.com.safetynet.safetynetalerts.repositories = debug
+logging.level.com.safetynet.safetynetalerts.services     = debug
+logging.level.com.safetynet.safetynetalerts.controllers  = debug
+
+logging.file.name                                        = logs/SafetyNetAlerts.log

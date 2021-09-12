@@ -1,6 +1,8 @@
 package com.safetynet.safetynetalerts.DTO;
 
 import com.safetynet.safetynetalerts.entities.Person;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -98,5 +100,16 @@ public class MedicalRecordDTO {
     public void setAllergies(List<String> allergies) {
 
         this.allergies = allergies;
+    }
+
+    public JSONObject toJson() {
+
+        return new JSONObject() {{
+            this.put("firstName", MedicalRecordDTO.this.firstName);
+            this.put("lastName", MedicalRecordDTO.this.lastName);
+            this.put("birthDate", MedicalRecordDTO.this.birthdate);
+            this.put("medications", new JSONArray(MedicalRecordDTO.this.medications));
+            this.put("allergies", new JSONArray(MedicalRecordDTO.this.allergies));
+        }};
     }
 }
